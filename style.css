@@ -7,6 +7,7 @@
     --blush: #F3CBDD;
     --pearl: #F8F4F0;
     --plum: #624A72;
+    --border: #E5DCE8;
 
     /* FONTS */
     --font-heading: Georgia, "Times New Roman", serif;
@@ -40,7 +41,7 @@ body {
 }
 
 /* ==============================
-   LOGIN / FORGOT CARD (beige)
+   CARD (login / forgot / edit)
 ============================== */
 .login-card {
     background-color: var(--pearl);
@@ -50,6 +51,13 @@ body {
     border-radius: 22px;
     box-shadow: 0 15px 40px rgba(98, 74, 114, 0.12);
     text-align: center;
+}
+
+/* card lebar untuk page senarai pelajar */
+.login-card.wide-card {
+    max-width: 1500px;
+    width: 96%;
+    padding: 28px 20px;
 }
 
 .portal-label {
@@ -111,10 +119,11 @@ label {
 }
 
 /* INPUT FIELDS (Arial) */
-input {
+input,
+select {
     width: 100%;
     padding: 12px 14px;
-    border: 1px solid #E5DCE8;
+    border: 1px solid var(--border);
     border-radius: 13px;
     background-color: #FFFFFF;
     font-family: var(--font-input);
@@ -129,13 +138,18 @@ input::placeholder {
     font-family: var(--font-input);
 }
 
-input:focus {
+input:focus,
+select:focus {
     border-color: var(--lilac);
     box-shadow: 0 0 0 3px rgba(169, 140, 195, 0.12);
 }
 
-/* BUTTON (Georgia) */
-button {
+/* ==============================
+   BUTTONS (Georgia)
+============================== */
+button,
+.btn {
+    display: block;
     width: 100%;
     padding: 13px;
     margin-top: 7px;
@@ -146,13 +160,23 @@ button {
     font-family: var(--font-heading);
     font-size: 14px;
     font-weight: bold;
+    text-align: center;
+    text-decoration: none;
     cursor: pointer;
     transition: 0.3s;
 }
 
-button:hover {
+button:hover,
+.btn:hover {
     background-color: var(--lilac);
     transform: translateY(-2px);
+}
+
+.btn.btn-inline,
+button.btn-inline {
+    display: inline-block;
+    width: auto;
+    padding: 11px 26px;
 }
 
 /* ==============================
@@ -203,9 +227,11 @@ button:hover {
 ============================== */
 .logout-btn {
     display: inline-block;
+    width: auto;
     background-color: var(--plum);
     color: var(--pearl);
     padding: 11px 25px;
+    margin-top: 0;
     border-radius: 12px;
     text-decoration: none;
     font-family: var(--font-heading);
@@ -230,9 +256,178 @@ button:hover {
 }
 
 /* ==============================
+   BUTANG ADD RESULT
+============================== */
+.top-actions {
+    margin-top: 4px;
+}
+
+/* ==============================
+   SEARCH BAR
+============================== */
+.search-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 18px 0 6px;
+    flex-wrap: wrap;
+}
+
+.search-form input {
+    flex: 1;
+    min-width: 220px;
+    max-width: 420px;
+    width: auto;
+}
+
+/* butang search jangan melebar */
+.search-form button {
+    display: inline-block;
+    width: auto;
+    margin-top: 0;
+    padding: 12px 26px;
+}
+
+.show-all {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    color: var(--lilac);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.show-all:hover {
+    color: var(--plum);
+    text-decoration: underline;
+}
+
+/* ==============================
+   STUDENT RECORDS TABLE (kotak border)
+============================== */
+.table-wrap {
+    overflow-x: auto;
+    margin-top: 22px;
+    border-radius: 14px;
+    background-color: #FFFFFF;
+    box-shadow: 0 6px 20px rgba(98, 74, 114, 0.10);
+}
+
+.marks-table {
+    width: 100%;
+    min-width: 1200px;          /* skrin kecil: table scroll ke tepi, tak pecah */
+    table-layout: fixed;        /* lebar column tetap & teratur */
+    border-collapse: collapse;
+    border: 2px solid var(--plum);
+    font-family: var(--font-input);
+    font-size: 13px;
+    color: var(--plum);
+}
+
+.marks-table th,
+.marks-table td {
+    border: 1px solid var(--lilac);
+    padding: 12px 10px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.marks-table th {
+    background-color: var(--blush);
+    color: var(--plum);
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: bold;
+    white-space: normal;        /* header boleh turun baris */
+    border-bottom: 2px solid var(--plum);
+}
+
+.marks-table td {
+    overflow-wrap: anywhere;    /* teks panjang tak tolak column lain */
+}
+
+/* lebar setiap column (jumlah = 100%) */
+.marks-table th:nth-child(1)  { width: 5%;  }   /* No. */
+.marks-table th:nth-child(2)  { width: 18%; }   /* Student Name */
+.marks-table th:nth-child(3)  { width: 11%; }   /* Matric no. */
+.marks-table th:nth-child(4)  { width: 18%; }   /* Subject */
+.marks-table th:nth-child(5)  { width: 7%;  }   /* Test 1 */
+.marks-table th:nth-child(6)  { width: 7%;  }   /* Test 2 */
+.marks-table th:nth-child(7)  { width: 7%;  }   /* Final */
+.marks-table th:nth-child(8)  { width: 7%;  }   /* Total */
+.marks-table th:nth-child(9)  { width: 6%;  }   /* Grade */
+.marks-table th:nth-child(10) { width: 14%; }   /* Actions */
+
+/* nama pelajar dan subjek rata kiri */
+.marks-table td:nth-child(2),
+.marks-table td:nth-child(4) {
+    text-align: left;
+}
+
+/* column nombor jangan pecah baris */
+.marks-table td:nth-child(1),
+.marks-table td:nth-child(3),
+.marks-table td:nth-child(n+5):nth-child(-n+9) {
+    white-space: nowrap;
+}
+
+.marks-table tr:nth-child(even) td {
+    background-color: #FBF8FC;
+}
+
+.marks-table tr:hover td {
+    background-color: #F3ECF8;
+}
+
+/* ==============================
+   EDIT | DELETE
+   (guna class .btn-edit / .btn-delete,
+    selector href lama masih jalan juga)
+============================== */
+.marks-table td a {
+    display: inline-block;
+    padding: 6px 14px;
+    margin: 2px;
+    border-radius: 8px;
+    font-family: var(--font-input);
+    font-size: 12px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: 0.3s;
+}
+
+.marks-table td a.btn-edit,
+.marks-table td a[href*="edit.php"] {
+    background-color: #EDE3F5;
+    color: var(--plum);
+}
+
+.marks-table td a.btn-edit:hover,
+.marks-table td a[href*="edit.php"]:hover {
+    background-color: var(--lilac);
+    color: #FFFFFF;
+}
+
+.marks-table td a.btn-delete,
+.marks-table td a[href*="delete.php"] {
+    background-color: #FBE1E8;
+    color: #A33A5B;
+}
+
+.marks-table td a.btn-delete:hover,
+.marks-table td a[href*="delete.php"]:hover {
+    background-color: #A33A5B;
+    color: #FFFFFF;
+}
+
+/* ==============================
    RESPONSIVE
 ============================== */
 @media (max-width: 600px) {
+    body {
+        padding: 30px 12px;
+    }
+
     .login-card {
         padding: 25px 22px;
     }
@@ -243,5 +438,16 @@ button:hover {
 
     .login-card h2 {
         font-size: 23px;
+    }
+
+    .logout-fixed {
+        top: 10px;
+        right: 10px;
+        padding: 9px 18px;
+        font-size: 13px;
+    }
+
+    .search-form input {
+        max-width: 100%;
     }
 }

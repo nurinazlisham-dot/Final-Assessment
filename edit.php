@@ -2,97 +2,154 @@
 session_start();
 
 if (!isset($_SESSION['username'])) {
-    header("Location: ../index.php");
+    header("Location: login.php");
     exit();
 }
 
-require_once __DIR__ . '/../db.php';
+include 'db.php';
 
-$id = (int)($_GET['id'] ?? 0);
+$error = "";
 
-$sql = "SELECT * FROM students WHERE id = ?";
-$stmt = mysqli_prepare($conn, $sql);
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-mysqli_stmt_bind_param($stmt, "i", $id);
-mysqli_stmt_execute($stmt);
+    $id           = (int) $_POST['id'];
+    $student_name = trim($_POST['student_name']);
+    $matric_no    = trim($_POST['matric_no']);
+    $subject_name = trim($_POST['subject_name']);
+    $test1        = (float) $_POST['test1'];
+    $test2        = (float) $_POST['test2'];
+    $final_exam   = (float) $_POST['final_exam'];
 
-$result = mysqli_stmt_get_result($stmt);
-$student = mysqli_fetch_assoc($result);
+    if ($test1 < 0 || $test1 > 20 || $test2 < 0 || $test2 > 30 || $final_exam < 0 || $final_exam > 50) {
+        $error = "Marks out of range! (Test 1: 0-20, Test 2: 0-30, Final: 0-50)";
+    } else {
+        $total = $test1 + $test2 + $final_exam;
 
-mysqli_stmt_close($stmt);
+        if ($total >= 80)      { $grade = "A"; }
+        elseif ($total >= 70)  { $grade = "B"; }
+        elseif ($total >= 60)  { $grade = "C"; }
+        elseif ($total >= 50)  { $grade = "D"; }
+        else                   { $grade = "E"; }
 
-if (!$student) {
-    die("Student record not found!");
+        $sql = "UPDATE results
+                SET student_name = ?, matric_no = ?, subject_name = ?,
+                    test1 = ?, test2 = ?, final_exam = ?, total_marks = ?, grade = ?
+                WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssddddsi", $student_name, $matric_no, $subject_name,
+                          $test1, $test2, $final_exam, $total, $grade, $id);
+        $stmt->execute();
+        $stmt->close();
+
+        header("Location: index.php");
+        exit();
+    }
+} else {
+    $id = isset($_GET['id']) ? (int) $_GET['id'] : 0;
+}
+
+// ambil data pelajar
+$stmt = $conn->prepare("SELECT * FROM results WHERE id = ?");
+$stmt->bind_param("i", $id);
+$stmt->execute();
+$row = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+
+if (!$row) {
+    header("Location: index.php");
+    exit();
+}
+
+// kalau ada error masa submit, kekalkan apa yang user taip
+if ($error != "") {
+    $row['student_name'] = $student_name;
+    $row['matric_no']    = $matric_no;
+    $row['subject_name'] = $subject_name;
+    $row['test1']        = $test1;
+    $row['test2']        = $test2;
+    $row['final_exam']   = $final_exam;
 }
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Edit Student</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Result - Student Grading System</title>
 
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css?v=10">
 </head>
 
 <body>
 
+    <a href="logout.php" class="logout-btn logout-fixed">Logout</a>
+
     <div class="container">
+        <div class="login-card">
 
-        <h1>Student Grading System</h1>
-        <h2></h2>
-        <h3>Edit Student Information</h3>
+            <div class="portal-label">✦ STUDENT PORTAL</div>
 
-        <form action="index.php" method="POST">
+            <h1>MAHSA KOLEJ</h1>
+            <h2>Edit Result</h2>
 
-            <input type="hidden" name="id"
-                value="<?php echo $student['id']; ?>">
+            <p class="subtitle">Update the student's marks below.</p>
 
-            <label>Student Name</label>
-            <input type="text" name="student_name"
-                value="<?php echo htmlspecialchars($student['student_name']); ?>" required>
+            <?php if ($error != "") { ?>
+                <p class="error"><?php echo htmlspecialchars($error); ?></p>
+            <?php } ?>
 
-            <label>Matric Number</label>
-            <input type="text" name="matric_no"
-                value="<?php echo htmlspecialchars($student['matric_no']); ?>" required>
+            <form action="edit.php" method="POST">
 
-            <label>Subject Name</label>
-            <input type="text" name="subject_name"
-                value="<?php echo htmlspecialchars($student['subject_name']); ?>" required>
+                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
 
-            <label>Subject Code</label>
-            <input type="text" name="subject_code"
-                value="<?php echo htmlspecialchars($student['subject_code']); ?>" required>
+                <div class="form-group">
+                    <label for="student_name">Student Name</label>
+                    <input type="text" id="student_name" name="student_name"
+                           value="<?php echo htmlspecialchars($row['student_name']); ?>" required>
+                </div>
 
-            <label>Test 1 (20%)</label>
-            <input type="number" name="test1"
-                min="0" max="100" step="0.01"
-                value="<?php echo $student['test1']; ?>" required>
+                <div class="form-group">
+                    <label for="matric_no">Matric No.</label>
+                    <input type="text" id="matric_no" name="matric_no"
+                           value="<?php echo htmlspecialchars($row['matric_no']); ?>" required>
+                </div>
 
-            <label>Test 2 (30%)</label>
-            <input type="number" name="test2"
-                min="0" max="100" step="0.01"
-                value="<?php echo $student['test2']; ?>" required>
+                <div class="form-group">
+                    <label for="subject_name">Subject</label>
+                    <input type="text" id="subject_name" name="subject_name"
+                           value="<?php echo htmlspecialchars($row['subject_name']); ?>" required>
+                </div>
 
-            <label>Final Examination (50%)</label>
-            <input type="number" name="final_exam"
-                min="0" max="100" step="0.01"
-                value="<?php echo $student['final_exam']; ?>" required>
+                <div class="form-group">
+                    <label for="test1">Test 1 (20)</label>
+                    <input type="number" id="test1" name="test1" min="0" max="20" step="0.01"
+                           value="<?php echo htmlspecialchars($row['test1']); ?>" required>
+                </div>
 
-            <br><br>
+                <div class="form-group">
+                    <label for="test2">Test 2 (30)</label>
+                    <input type="number" id="test2" name="test2" min="0" max="30" step="0.01"
+                           value="<?php echo htmlspecialchars($row['test2']); ?>" required>
+                </div>
 
-            <button type="submit">UPDATE STUDENT</button>
+                <div class="form-group">
+                    <label for="final_exam">Final (50)</label>
+                    <input type="number" id="final_exam" name="final_exam" min="0" max="50" step="0.01"
+                           value="<?php echo htmlspecialchars($row['final_exam']); ?>" required>
+                </div>
 
-        </form>
+                <button type="submit">SAVE CHANGES</button>
 
-        <a href="index.php">Back to Student Records</a>
+            </form>
 
-        <br><br>
+            <p class="link-text">
+                <a href="index.php">← Back to Student Records</a>
+            </p>
 
-        <a href="../index.php">Back to Dashboard</a>
-
+        </div>
     </div>
 
 </body>
-
 </html>
