@@ -1,0 +1,247 @@
+/* ==============================
+   LAVENDER & LILAC COLOUR PALETTE
+============================== */
+:root {
+    --lavender: #C8B6E2;
+    --lilac: #A98CC3;
+    --blush: #F3CBDD;
+    --pearl: #F8F4F0;
+    --plum: #624A72;
+
+    /* FONTS */
+    --font-heading: Georgia, "Times New Roman", serif;
+    --font-input: Arial, "Times New Roman", serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ==============================
+   MAIN BACKGROUND
+============================== */
+body {
+    min-height: 100vh;
+    background: linear-gradient(115deg, #C8B6E2 0%, #E4C4DD 50%, #F3CBDD 100%);
+    background-attachment: fixed;
+    font-family: var(--font-heading);
+    padding: 40px 20px;
+}
+
+/* ketengah kan card (atas bawah + kiri kanan) */
+.container {
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ==============================
+   LOGIN / FORGOT CARD (beige)
+============================== */
+.login-card {
+    background-color: var(--pearl);
+    width: 100%;
+    max-width: 510px;
+    padding: 32px;
+    border-radius: 22px;
+    box-shadow: 0 15px 40px rgba(98, 74, 114, 0.12);
+    text-align: center;
+}
+
+.portal-label {
+    display: inline-block;
+    background-color: var(--blush);
+    color: var(--plum);
+    padding: 7px 17px;
+    border-radius: 30px;
+    font-family: var(--font-input);
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 15px;
+}
+
+/* ==============================
+   HEADINGS (Georgia)
+============================== */
+.login-card h1 {
+    display: block;
+    width: 100%;
+    font-family: var(--font-heading);
+    font-size: 25px;
+    font-weight: bold;
+    color: var(--plum);
+    margin-bottom: 14px;
+}
+
+.login-card h2 {
+    display: block;
+    width: 100%;
+    font-family: var(--font-heading);
+    font-size: 27px;
+    font-weight: normal;
+    color: var(--plum);
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    color: var(--lilac);
+    margin-bottom: 28px;
+}
+
+/* ==============================
+   FORM
+============================== */
+.form-group {
+    text-align: left;
+    margin-bottom: 17px;
+}
+
+label {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: 14px;
+    color: var(--plum);
+    margin-bottom: 7px;
+}
+
+/* INPUT FIELDS (Arial) */
+input {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #E5DCE8;
+    border-radius: 13px;
+    background-color: #FFFFFF;
+    font-family: var(--font-input);
+    font-size: 13px;
+    color: var(--plum);
+    outline: none;
+    transition: 0.3s;
+}
+
+input::placeholder {
+    color: #B9AABF;
+    font-family: var(--font-input);
+}
+
+input:focus {
+    border-color: var(--lilac);
+    box-shadow: 0 0 0 3px rgba(169, 140, 195, 0.12);
+}
+
+/* BUTTON (Georgia) */
+button {
+    width: 100%;
+    padding: 13px;
+    margin-top: 7px;
+    background-color: var(--plum);
+    color: var(--pearl);
+    border: none;
+    border-radius: 13px;
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: var(--lilac);
+    transform: translateY(-2px);
+}
+
+/* ==============================
+   ERROR & SUCCESS MESSAGE
+============================== */
+.error {
+    background-color: var(--blush);
+    color: var(--plum);
+    padding: 10px;
+    border-radius: 10px;
+    font-family: var(--font-input);
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+
+.success {
+    background-color: #E3F1E4;
+    color: #3F6B45;
+    padding: 10px;
+    border-radius: 10px;
+    font-family: var(--font-input);
+    font-size: 13px;
+    margin-bottom: 18px;
+}
+
+/* ==============================
+   LINKS (Forgot password / Back to login)
+============================== */
+.link-text {
+    margin-top: 18px;
+    font-family: var(--font-heading);
+    font-size: 13px;
+}
+
+.link-text a {
+    color: var(--lilac);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.link-text a:hover {
+    color: var(--plum);
+    text-decoration: underline;
+}
+
+/* ==============================
+   LOGOUT BUTTON (Georgia)
+============================== */
+.logout-btn {
+    display: inline-block;
+    background-color: var(--plum);
+    color: var(--pearl);
+    padding: 11px 25px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-family: var(--font-heading);
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 18px rgba(98, 74, 114, 0.25);
+    transition: 0.3s;
+}
+
+.logout-btn:hover {
+    background-color: var(--lilac);
+    transform: translateY(-2px);
+}
+
+/* butang tetap kat penjuru kanan atas */
+.logout-fixed {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+/* ==============================
+   RESPONSIVE
+============================== */
+@media (max-width: 600px) {
+    .login-card {
+        padding: 25px 22px;
+    }
+
+    .login-card h1 {
+        font-size: 22px;
+    }
+
+    .login-card h2 {
+        font-size: 23px;
+    }
+}
