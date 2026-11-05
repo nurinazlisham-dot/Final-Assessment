@@ -1,7 +1,8 @@
+
 <?php
 session_start();
 
-include 'database.php';
+include 'db.php';
 
 $error = "";
 
@@ -25,6 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         header("Location: dashboard.php");
         exit();
+
     } else {
         $error = "Invalid Username or Password!";
     }
@@ -36,10 +38,13 @@ mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Login - MAHSA Student Grading System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - Student Grading System</title>
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -48,35 +53,47 @@ mysqli_close($conn);
 
     <div class="container">
 
-        <h1>MAHSA KOLEJ</h1>
-        <h2>Student Grading System</h2>
+        <div class="login-card">
 
-        <?php if ($error != "") { ?>
+            <h1>Student Grading System</h1>
 
-            <p class="error">
-                <?php echo htmlspecialchars($error); ?>
-            </p>
+            <p class="subtitle">Welcome back! Please log in.</p>
 
-        <?php } ?>
+            <?php if ($error != "") { ?>
+                <p class="error">
+                    <?php echo htmlspecialchars($error); ?>
+                </p>
+            <?php } ?>
 
-        <form action="login.php" method="POST">
+            <form action="login.php" method="POST">
 
-            <label>Username</label>
-            <input type="text" name="username"
-                placeholder="Enter Username" required>
+                <label for="username">Username</label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter Username"
+                    required
+                >
 
-            <label>Password</label>
-            <input type="password" name="password"
-                placeholder="Enter Password" required>
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter Password"
+                    required
+                >
 
-            <button type="submit">LOGIN</button>
+                <button type="submit">LOGIN</button>
 
-        </form>
+            </form>
 
-        <a href="index.php">Back to Login</a>
+            <a href="index.php" class="back-link">Back to Login</a>
+
+        </div>
 
     </div>
 
 </body>
-
 </html>
