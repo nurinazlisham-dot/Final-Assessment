@@ -60,7 +60,7 @@ $results = $stmt->get_result();
             echo "<td>" . htmlspecialchars($row['final_exam']) . "</td>";
             echo "<td>" . htmlspecialchars($row['total_marks']) . "</td>";
             echo "<td>" . htmlspecialchars($row['grade']) . "</td>";
-            echo "<td><a href='edit.php?id=" . $row['result'] . "'>Edit</a> | <a href='delete.php?id=" . $row['result'] . "'>Delete</a></td>";
+            echo "<td><a href='edit.php?id=" . $row['id'] . "'>Edit</a> | <a href='delete.php?id=" . $row['id'] . "'>Delete</a></td>";
             echo "</tr>";
             $no++;
         }
